@@ -110,16 +110,18 @@ function createBookCard(book) {
 
   const bookUrl = getBookUrl(book);
 
-  const coverLink = document.createElement("a");
-  coverLink.className = "book-cover-link";
-  coverLink.href = bookUrl ?? "#";
-  coverLink.setAttribute("aria-label", `Abrir ${book.title}`);
+  const cardLink = document.createElement(bookUrl ? "a" : "div");
+  cardLink.className = "book-card-link";
+  if (bookUrl) {
+    cardLink.href = bookUrl;
+    cardLink.setAttribute("aria-label", `Abrir livro: ${book.title}`);
+  }
 
   const image = document.createElement("img");
 
   image.className = "book-cover";
   image.src = book.image || PLACEHOLDER_COVER;
-  image.alt = `Capa de ${book.title}`;
+  image.alt = "";
   image.loading = "lazy";
   image.decoding = "async";
   if (!book.image) image.classList.add("skeleton");
@@ -131,7 +133,7 @@ function createBookCard(book) {
     image.classList.remove("skeleton");
   };
 
-  coverLink.appendChild(image);
+  cardLink.appendChild(image);
 
   const info = document.createElement("div");
   info.className = "book-info";
@@ -150,12 +152,6 @@ function createBookCard(book) {
   const price = document.createElement("span");
   price.className = "book-price";
   price.textContent = book.price || "Grátis";
-
-  const readLink = document.createElement("a");
-  readLink.className = "read-link";
-  readLink.href = coverLink.href;
-  readLink.textContent = "Ler";
-  readLink.setAttribute("aria-label", `Ler ${book.title}`);
 
   const favoriteButton = document.createElement("button");
   favoriteButton.className = "favorite-toggle";
@@ -183,11 +179,12 @@ function createBookCard(book) {
       applyFilters();
   });
 
-  meta.append(price, readLink, favoriteButton);
+  meta.append(price);
 
   info.append(title, author, meta);
+  cardLink.append(info);
 
-  article.append(coverLink, info);
+  article.append(cardLink, favoriteButton);
 
   /*
 
