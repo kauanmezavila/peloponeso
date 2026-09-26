@@ -1,4 +1,14 @@
-import { DEFAULT_LIBRARY_URL, decodeLibraryKey, encodeKey, getActiveLibrary, getLibraries, getLibraryNames, normalizeLibraryUrl, saveLibraries, validateLibrary } from "./keys.js";
+import {
+  DEFAULT_LIBRARY_URL,
+  decodeLibraryKey,
+  encodeKey,
+  getActiveLibrary,
+  getLibraries,
+  getLibraryNames,
+  normalizeLibraryUrl,
+  saveLibraries,
+  validateLibrary,
+} from "./keys.js";
 
 const menu = document.querySelector(".library-menu");
 const input = document.getElementById("libraryUrl");
@@ -11,35 +21,57 @@ let active = getActiveLibrary();
 
 function updateActiveLibraryLabel() {
   const label = document.getElementById("activeLibrary");
-  if (label) label.textContent = `Biblioteca em uso: ${active === DEFAULT_LIBRARY_URL ? "Peloponeso" : getLibraryNames()[active] || new URL(active).host + new URL(active).pathname}`;
+  if (label)
+    label.textContent = `Biblioteca em uso: ${active === DEFAULT_LIBRARY_URL ? "Peloponeso" : getLibraryNames()[active] || new URL(active).host + new URL(active).pathname}`;
 }
 
 function renderOptions() {
-  select.replaceChildren(...getLibraries().map((url) => {
-    const option = document.createElement("option");
-    option.value = url;
-    option.textContent = url === DEFAULT_LIBRARY_URL ? "Peloponeso (padrão)" : getLibraryNames()[url] || `${new URL(url).host}${new URL(url).pathname}`;
-    option.selected = url === active;
-    return option;
-  }));
-  savedLibraries.replaceChildren(...getLibraries().filter((url) => url !== DEFAULT_LIBRARY_URL && url !== active).map((url) => {
-    const row = document.createElement("div");
-    row.className = "saved-library-row";
-    const label = document.createElement("span");
-    label.textContent = getLibraryNames()[url] || `${new URL(url).host}${new URL(url).pathname}`;
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.textContent = "Remover";
-    remove.setAttribute("aria-label", `Remover ${label.textContent} das bibliotecas salvas`);
-    remove.addEventListener("click", () => {
-      if (!confirm(`Remover “${label.textContent}” das bibliotecas salvas?`)) return;
-      saveLibraries(getLibraries().filter((item) => item !== url), active);
-      renderOptions();
-      message.textContent = "Biblioteca removida das salvas.";
-    });
-    row.append(label, remove);
-    return row;
-  }));
+  select.replaceChildren(
+    ...getLibraries().map((url) => {
+      const option = document.createElement("option");
+      option.value = url;
+      option.textContent =
+        url === DEFAULT_LIBRARY_URL
+          ? "Peloponeso (padrão)"
+          : getLibraryNames()[url] ||
+            `${new URL(url).host}${new URL(url).pathname}`;
+      option.selected = url === active;
+      return option;
+    }),
+  );
+  savedLibraries.replaceChildren(
+    ...getLibraries()
+      .filter((url) => url !== DEFAULT_LIBRARY_URL && url !== active)
+      .map((url) => {
+        const row = document.createElement("div");
+        row.className = "saved-library-row";
+        const label = document.createElement("span");
+        label.textContent =
+          getLibraryNames()[url] ||
+          `${new URL(url).host}${new URL(url).pathname}`;
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "Remover";
+        remove.setAttribute(
+          "aria-label",
+          `Remover ${label.textContent} das bibliotecas salvas`,
+        );
+        remove.addEventListener("click", () => {
+          if (
+            !confirm(`Remover “${label.textContent}” das bibliotecas salvas?`)
+          )
+            return;
+          saveLibraries(
+            getLibraries().filter((item) => item !== url),
+            active,
+          );
+          renderOptions();
+          message.textContent = "Biblioteca removida das salvas.";
+        });
+        row.append(label, remove);
+        return row;
+      }),
+  );
 }
 
 renderOptions();
@@ -57,7 +89,8 @@ document.getElementById("addLibrary").addEventListener("click", async () => {
     const url = await decodeLibraryKey(input.value);
     const books = await validateLibrary(url);
     const names = getLibraryNames();
-    names[url] = nameInput.value.trim() || `${new URL(url).host}${new URL(url).pathname}`;
+    names[url] =
+      nameInput.value.trim() || `${new URL(url).host}${new URL(url).pathname}`;
     saveLibraries([...getLibraries(), url], url, names);
     active = url;
     clearSharedKey();
@@ -67,7 +100,9 @@ document.getElementById("addLibrary").addEventListener("click", async () => {
     deleteButton.disabled = false;
     updateActiveLibraryLabel();
     message.textContent = `Biblioteca validada e salva (${books.length} ${books.length === 1 ? "livro" : "livros"}).`;
-    window.dispatchEvent(new CustomEvent("librarychange", { detail: { url: active } }));
+    window.dispatchEvent(
+      new CustomEvent("librarychange", { detail: { url: active } }),
+    );
   } catch (error) {
     message.textContent = error.message;
   }
@@ -81,12 +116,17 @@ select.addEventListener("change", () => {
   renderOptions();
   clearSharedKey();
   message.textContent = "Biblioteca selecionada.";
-  window.dispatchEvent(new CustomEvent("librarychange", { detail: { url: active } }));
+  window.dispatchEvent(
+    new CustomEvent("librarychange", { detail: { url: active } }),
+  );
 });
 
 deleteButton.addEventListener("click", () => {
   if (active === DEFAULT_LIBRARY_URL) return;
-  if (!confirm("Excluir esta biblioteca salva? Essa ação não pode ser desfeita.")) return;
+  if (
+    !confirm("Excluir esta biblioteca salva? Essa ação não pode ser desfeita.")
+  )
+    return;
 
   const libraries = getLibraries().filter((url) => url !== active);
   active = DEFAULT_LIBRARY_URL;
@@ -95,8 +135,11 @@ deleteButton.addEventListener("click", () => {
   renderOptions();
   deleteButton.disabled = true;
   updateActiveLibraryLabel();
-  message.textContent = "Biblioteca excluída. Voltando à biblioteca Peloponeso.";
-  window.dispatchEvent(new CustomEvent("librarychange", { detail: { url: active } }));
+  message.textContent =
+    "Biblioteca excluída. Voltando à biblioteca Peloponeso.";
+  window.dispatchEvent(
+    new CustomEvent("librarychange", { detail: { url: active } }),
+  );
 });
 
 document.getElementById("shareLibrary").addEventListener("click", async () => {
@@ -109,17 +152,20 @@ document.getElementById("shareLibrary").addEventListener("click", async () => {
   }
 });
 
-document.getElementById("clearReadingProgress").addEventListener("click", () => {
-  if (!confirm("Apagar todo o progresso de leitura salvo neste navegador?")) return;
-  for (const cookie of document.cookie.split(";")) {
-    const name = cookie.trim().split("=", 1)[0];
-    if (name.startsWith("reading_")) {
-      document.cookie = `${name}=; max-age=0; path=/; samesite=lax`;
+document
+  .getElementById("clearReadingProgress")
+  .addEventListener("click", () => {
+    if (!confirm("Apagar todo o progresso de leitura salvo neste navegador?"))
+      return;
+    for (const cookie of document.cookie.split(";")) {
+      const name = cookie.trim().split("=", 1)[0];
+      if (name.startsWith("reading_")) {
+        document.cookie = `${name}=; max-age=0; path=/; samesite=lax`;
+      }
     }
-  }
-  message.textContent = "Progresso de leitura apagado.";
-  window.dispatchEvent(new Event("readingprogresschange"));
-});
+    message.textContent = "Progresso de leitura apagado.";
+    window.dispatchEvent(new Event("readingprogresschange"));
+  });
 
 const keyUrl = document.getElementById("keyUrl");
 const generatedKey = document.getElementById("generatedKey");

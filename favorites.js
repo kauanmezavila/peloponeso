@@ -15,7 +15,9 @@ export function getFavorites() {
 export function toggleFavorite(book) {
   const id = favoriteId(book);
   const favorites = getFavorites();
-  const next = favorites.includes(id) ? favorites.filter((item) => item !== id) : [...favorites, id];
+  const next = favorites.includes(id)
+    ? favorites.filter((item) => item !== id)
+    : [...favorites, id];
   localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   window.dispatchEvent(new Event("favoriteschange"));
   return next.includes(id);

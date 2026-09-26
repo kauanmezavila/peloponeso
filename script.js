@@ -1,5 +1,10 @@
 import { extractBooks, getActiveLibrary } from "./keys.js";
-import { favoriteId, getFavorites, isFavorite, toggleFavorite } from "./favorites.js";
+import {
+  favoriteId,
+  getFavorites,
+  isFavorite,
+  toggleFavorite,
+} from "./favorites.js";
 
 let pdfjsLib;
 
@@ -158,12 +163,18 @@ function createBookCard(book) {
   favoriteButton.dataset.favoriteId = favoriteId(book);
   favoriteButton.setAttribute("aria-pressed", String(isFavorite(book)));
   favoriteButton.textContent = isFavorite(book) ? "★" : "☆";
-  favoriteButton.setAttribute("aria-label", isFavorite(book) ? "Remover dos favoritos" : "Adicionar aos favoritos");
+  favoriteButton.setAttribute(
+    "aria-label",
+    isFavorite(book) ? "Remover dos favoritos" : "Adicionar aos favoritos",
+  );
   favoriteButton.addEventListener("click", () => {
     const favorite = toggleFavorite(book);
     favoriteButton.setAttribute("aria-pressed", String(favorite));
     favoriteButton.textContent = favorite ? "★" : "☆";
-    favoriteButton.setAttribute("aria-label", favorite ? "Remover dos favoritos" : "Adicionar aos favoritos");
+    favoriteButton.setAttribute(
+      "aria-label",
+      favorite ? "Remover dos favoritos" : "Adicionar aos favoritos",
+    );
     updateFavoritesButton();
     if (
       favoritesOnlyButton.getAttribute("aria-pressed") === "true" &&
@@ -366,7 +377,8 @@ async function loadBooks() {
     if (
       searchInput.value ||
       favoritesOnlyButton.getAttribute("aria-pressed") === "true"
-    ) applyFilters();
+    )
+      applyFilters();
     else await renderNextPage();
   } catch (error) {
     if (generation !== loadGeneration) return;
@@ -498,7 +510,10 @@ function updateFavoritesButton() {
     const favorite = favorites.has(button.dataset.favoriteId);
     button.setAttribute("aria-pressed", String(favorite));
     button.textContent = favorite ? "★" : "☆";
-    button.setAttribute("aria-label", favorite ? "Remover dos favoritos" : "Adicionar aos favoritos");
+    button.setAttribute(
+      "aria-label",
+      favorite ? "Remover dos favoritos" : "Adicionar aos favoritos",
+    );
   });
 }
 

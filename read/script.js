@@ -31,7 +31,10 @@ let readingCookie = "";
 
 function getSavedPage() {
   const page = Number.parseInt(
-    document.cookie.split("; ").find((cookie) => cookie.startsWith(`${readingCookie}=`))?.split("=")[1],
+    document.cookie
+      .split("; ")
+      .find((cookie) => cookie.startsWith(`${readingCookie}=`))
+      ?.split("=")[1],
     10,
   );
   return Number.isInteger(page) && page > 0 ? page : 1;
@@ -146,7 +149,9 @@ async function loadPdf(url) {
     pdf = null;
     totalPages.textContent = "0";
     progress.style.width = "0%";
-    setMessage("Não foi possível abrir este PDF. Confira o endereço e tente novamente.");
+    setMessage(
+      "Não foi possível abrir este PDF. Confira o endereço e tente novamente.",
+    );
   } finally {
     loadButton.disabled = false;
     updateControls();
@@ -162,7 +167,9 @@ function getBookFromQuery() {
     return bookPath;
   }
 
-  const normalizedPath = bookPath.endsWith(".pdf") ? bookPath : `${bookPath}.pdf`;
+  const normalizedPath = bookPath.endsWith(".pdf")
+    ? bookPath
+    : `${bookPath}.pdf`;
   return `../${normalizedPath.replace(/^\.\//, "")}`;
 }
 
