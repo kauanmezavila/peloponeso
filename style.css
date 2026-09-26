@@ -337,7 +337,10 @@ button {
 }
 .project-intro {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) minmax(260px, 290px);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) minmax(
+      260px,
+      290px
+    );
   align-items: center;
   gap: clamp(24px, 3vw, 42px);
   padding: 34px max(24px, calc((100% - 1180px) / 2));
