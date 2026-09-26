@@ -1,0 +1,165 @@
+<!doctype html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#405431" />
+    <meta
+      name="description"
+      content="Biblioteca digital Peloponeso — navegue e leia o acervo."
+    />
+    <title>Peloponeso | A Livraria Livre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="img/logo.png" type="image/png" />
+  </head>
+
+  <body class="catalog-page">
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Catálogo de livros">
+        <span class="antic-didone-regular">Peloponeso</span>
+      </a>
+      <nav class="header-actions" aria-label="Navegação principal">
+        <a class="home-link" href="./"
+          >Início <span aria-hidden="true">↗</span></a
+        >
+        <details class="library-menu">
+          <summary>Bibliotecas</summary>
+          <div class="library-menu-panel">
+            <label for="libraryName">Nome da biblioteca</label>
+            <input
+              id="libraryName"
+              type="text"
+              maxlength="60"
+              placeholder="Ex.: Minha biblioteca"
+            />
+            <label for="libraryUrl">Chave da biblioteca</label>
+            <div class="library-add-row">
+              <input
+                id="libraryUrl"
+                type="text"
+                placeholder="Cole a chave da biblioteca"
+                autocomplete="off"
+              /><button id="addLibrary" type="button">Adicionar</button>
+            </div>
+            <label for="librarySelect">Biblioteca ativa</label>
+            <select id="librarySelect"></select>
+            <button id="deleteLibrary" class="library-delete" type="button">
+              Excluir biblioteca
+            </button>
+            <div
+              id="savedLibraries"
+              class="saved-libraries"
+              aria-label="Outras bibliotecas salvas"
+            ></div>
+            <button
+              id="clearReadingProgress"
+              class="library-delete"
+              type="button"
+            >
+              Limpar progresso de leitura
+            </button>
+            <button id="shareLibrary" type="button">
+              Copiar chave da biblioteca ativa
+            </button>
+            <details class="key-converter">
+              <summary>Converter URL em chave</summary>
+              <label for="keyUrl">URL de books.json</label>
+              <input
+                id="keyUrl"
+                type="url"
+                placeholder="https://exemplo.com/books.json"
+              />
+              <button id="convertKey" type="button">Gerar chave</button>
+              <label for="generatedKey">Chave gerada</label>
+              <input id="generatedKey" type="text" readonly />
+              <button id="copyGeneratedKey" type="button" disabled>
+                Copiar chave
+              </button>
+            </details>
+            <span id="libraryMessage" role="status" aria-live="polite"></span>
+          </div>
+        </details>
+      </nav>
+    </header>
+
+    <main class="catalog">
+      <section class="catalog-intro" aria-labelledby="catalog-title">
+        <div>
+          <p class="eyebrow">"It's free and forever will be" ~ BK</p>
+
+          <h1 id="catalog-title">Nosso acervo</h1>
+
+          <p class="intro-copy">Navega pelo catálogo e comece a ler.</p>
+        </div>
+
+        <p class="book-count" id="bookCount" aria-live="polite">0 livros</p>
+      </section>
+
+      <section class="catalog-filters" aria-label="Pesquisar e filtrar livros">
+        <div class="search-box">
+          <label for="bookSearch">Barra de pesquisa</label>
+          <input
+            type="search"
+            id="bookSearch"
+            placeholder="Título, autor..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="category-box">
+          <label for="categoryFilter">Categoria</label>
+          <select id="categoryFilter">
+            <option value="">Todas categorias</option>
+          </select>
+          <p class="active-library" id="activeLibrary" aria-live="polite"></p>
+        </div>
+
+        <div class="filter-actions">
+          <button id="clearFilters" class="clear-filters" type="button">
+            Limpar
+          </button>
+          <button
+            id="favoritesOnly"
+            class="clear-filters"
+            type="button"
+            aria-pressed="false"
+          >
+            Só favoritos
+          </button>
+        </div>
+      </section>
+
+      <section aria-label="Livros disponíveis">
+        <div class="book-grid" id="books"></div>
+
+        <div
+          class="catalog-message"
+          id="catalogMessage"
+          role="status"
+          hidden
+        ></div>
+
+        <div class="load-more-wrapper">
+          <button id="loadMore" class="load-more" type="button" hidden>
+            Carregar mais
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Peloponeso | A biblioteca livre</span>
+      <span>© <span id="year"></span></span>
+    </footer>
+
+    <script src="library-menu.js" type="module"></script>
+    <script src="script.js" type="module"></script>
+  </body>
+</html>

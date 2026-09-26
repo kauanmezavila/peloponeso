@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#405431" />
+    <title>Peloponeso | Leitor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="../img/logo.png" type="image/png" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a
+        class="reader-brand"
+        href="../"
+        aria-label="Voltar ao acervo Peloponeso"
+      >
+        Peloponeso
+      </a>
+
+      <div class="url-box" role="search">
+        <label class="sr-only" for="pdfUrl">Endereço do PDF</label>
+        <input
+          type="url"
+          id="pdfUrl"
+          inputmode="url"
+          autocomplete="off"
+          placeholder="Cole o endereço de um PDF…"
+          aria-label="Endereço do PDF"
+        />
+        <button id="loadButton" type="button">Abrir PDF</button>
+      </div>
+    </header>
+
+    <main class="reader-shell" id="readerShell">
+        <div class="toolbar" aria-label="Controles de leitura">
+        <div class="control-group">
+          <button
+            id="previousButton"
+            type="button"
+            aria-label="Página anterior"
+            title="Página anterior"
+          >
+            <
+          </button>
+          <label class="page-control">
+            <span class="sr-only">Página</span>
+            <input
+              type="number"
+              id="currentPage"
+              value="1"
+              min="1"
+              inputmode="numeric"
+            />
+            <span>de</span>
+            <span id="totalPages">0</span>
+          </label>
+          <button
+            id="nextButton"
+            type="button"
+            aria-label="Próxima página"
+            title="Próxima página"
+          >
+            >
+          </button>
+        </div>
+
+        <span class="separator" aria-hidden="true"></span>
+
+        <div class="control-group">
+          <button
+            id="zoomOut"
+            type="button"
+            aria-label="Diminuir zoom"
+            title="Diminuir zoom"
+          >
+            -
+          </button>
+          <span id="zoomText" class="zoom-value">100%</span>
+          <button
+            id="zoomIn"
+            type="button"
+            aria-label="Aumentar zoom"
+            title="Aumentar zoom"
+          >
+            +
+          </button>
+          <button id="fitButton" type="button">Ajustar página</button>
+          <button
+            id="fullscreenButton"
+            type="button"
+            aria-label="Alternar tela cheia"
+            title="Alternar tela cheia"
+          >
+            Tela cheia
+          </button>
+        </div>
+      </div>
+
+      <div class="progress-track" aria-hidden="true">
+        <div id="progress"></div>
+      </div>
+
+      <section
+        id="readerContainer"
+        class="reader-container"
+        aria-label="Leitor de PDF"
+      >
+        <div id="message" class="message" role="status">
+          Insira o endereço de um PDF para começar a ler.
+        </div>
+        <canvas id="pdfCanvas" aria-label="Current PDF page"></canvas>
+      </section>
+    </main>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs"
+      type="module"
+    ></script>
+    <script src="script.js" type="module"></script>
+  </body>
+</html>

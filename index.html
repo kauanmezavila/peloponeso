@@ -1,0 +1,224 @@
+<!doctype html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#405431" />
+    <meta
+      name="description"
+      content="Biblioteca digital Peloponeso — navegue e leia o acervo."
+    />
+    <title>Peloponeso | A Livraria Livre</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="img/logo.png" type="image/png" />
+  </head>
+
+  <body class="home-page">
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Página inicial do Peloponeso">
+        <span class="antic-didone-regular">Peloponeso</span>
+      </a>
+      <nav class="header-actions" aria-label="Navegação principal">
+        <a class="home-link" href="catalogo.html"
+          >Explorar acervo <span aria-hidden="true">↗</span></a
+        >
+        <details class="library-menu">
+          <summary>Bibliotecas</summary>
+          <div class="library-menu-panel">
+            <label for="libraryName">Nome da biblioteca</label>
+            <input
+              id="libraryName"
+              type="text"
+              maxlength="60"
+              placeholder="Ex.: Minha biblioteca"
+            />
+            <label for="libraryUrl">Chave da biblioteca</label>
+            <div class="library-add-row">
+              <input
+                id="libraryUrl"
+                type="text"
+                placeholder="Cole a chave da biblioteca"
+                autocomplete="off"
+              /><button id="addLibrary" type="button">Adicionar</button>
+            </div>
+            <label for="librarySelect">Biblioteca ativa</label>
+            <select id="librarySelect"></select>
+            <button id="deleteLibrary" class="library-delete" type="button">
+              Excluir biblioteca
+            </button>
+            <div
+              id="savedLibraries"
+              class="saved-libraries"
+              aria-label="Outras bibliotecas salvas"
+            ></div>
+            <button
+              id="clearReadingProgress"
+              class="library-delete"
+              type="button"
+            >
+              Limpar progresso de leitura
+            </button>
+            <button id="shareLibrary" type="button">
+              Copiar chave da biblioteca ativa
+            </button>
+            <details class="key-converter">
+              <summary>Converter URL em chave</summary>
+              <label for="keyUrl">URL de books.json</label>
+              <input
+                id="keyUrl"
+                type="url"
+                placeholder="https://exemplo.com/books.json"
+              />
+              <button id="convertKey" type="button">Gerar chave</button>
+              <label for="generatedKey">Chave gerada</label>
+              <input id="generatedKey" type="text" readonly />
+              <button id="copyGeneratedKey" type="button" disabled>
+                Copiar chave
+              </button>
+            </details>
+            <span id="libraryMessage" role="status" aria-live="polite"></span>
+          </div>
+        </details>
+      </nav>
+    </header>
+
+    <main class="home">
+      <section class="banner" aria-labelledby="home-title">
+        <img src="img/banner.jpg" alt="Estantes de uma biblioteca" />
+        <div class="banner-shade"></div>
+        <div class="banner-copy">
+          <p class="home-kicker">A LIVRARIA LIVRE · DESDE SEMPRE</p>
+          <h1 id="home-title" class="antic-didone-regular">
+            Ideias livres.<br />Leitura livre.
+          </h1>
+          <p class="home-description">
+            Encontre seu livro favorito no acervo gratuito do Peloponeso.
+          </p>
+          <form class="home-search" action="catalogo.html" role="search">
+            <label class="sr-only" for="home-search"
+              >Buscar livros por título ou autor</label
+            >
+            <input
+              id="home-search"
+              name="q"
+              type="search"
+              placeholder="Título, autor ou palavra-chave"
+            />
+            <button type="submit" aria-label="Buscar no acervo">⌕</button>
+          </form>
+          <a class="home-cta" href="catalogo.html"
+            >Explorar todos os livros <span aria-hidden="true">→</span></a
+          >
+        </div>
+        <span class="banner-index" aria-hidden="true"
+          >Panteão - Acrópole de Atenas, Grécia</span
+        >
+      </section>
+      <section
+        class="home-shelf"
+        id="continueSection"
+        aria-labelledby="continue-title"
+        hidden
+      >
+        <div class="shelf-heading">
+          <div>
+            <p class="eyebrow">Sua leitura</p>
+            <h2 id="continue-title">Continuar lendo</h2>
+          </div>
+        </div>
+        <div class="shelf-books" id="continue-reading" aria-live="polite"></div>
+      </section>
+      <section class="home-shelf" aria-labelledby="shelf-title">
+        <div class="shelf-heading">
+          <div>
+            <p class="eyebrow">Para começar a explorar</p>
+            <h2 id="shelf-title">Da estante</h2>
+          </div>
+          <a href="catalogo.html"
+            >Ver acervo completo <span aria-hidden="true">→</span></a
+          >
+        </div>
+        <div class="shelf-books" id="home-books" aria-live="polite"></div>
+      </section>
+      <section
+        class="home-shelf"
+        id="favoritesSection"
+        aria-labelledby="favorites-title"
+        hidden
+      >
+        <div class="shelf-heading">
+          <div>
+            <p class="eyebrow">Sua estante</p>
+            <h2 id="favorites-title">Favoritos</h2>
+          </div>
+          <a href="catalogo.html?favorites=1"
+            >Gerenciar favoritos <span aria-hidden="true">→</span></a
+          >
+        </div>
+        <div class="shelf-books" id="home-favorites" aria-live="polite"></div>
+      </section>
+      <section class="project-intro" aria-labelledby="project-intro-title">
+        <div>
+          <p class="eyebrow">PE·LO·PO·NE·SO</p>
+          <h2 id="project-intro-title">Uma biblioteca livre, para todos.</h2>
+        </div>
+        <p>
+          Um espaço para ler livros, montar sua estante e compartilhar
+          bibliotecas digitais. Leia no seu ritmo e retome de onde parou.
+        </p>
+        <a
+          class="github-card"
+          href="https://github.com/kauanmezavila"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir o perfil de Kauan M. no GitHub"
+        >
+          <img
+            src="https://avatars.githubusercontent.com/u/252367536?s=128&v=4"
+            alt=""
+            loading="lazy"
+          />
+          <span class="github-card-copy"
+            ><strong>Kauan M.</strong><span>@kauanmezavila</span></span
+          >
+          <span class="github-card-action"
+            >GitHub <span aria-hidden="true">↗</span></span
+          >
+        </a>
+      </section>
+      <section class="home-perks" aria-label="Sobre o Peloponeso">
+        <div>
+          <span class="perk-mark">01</span>
+          <h2>Leitura aberta</h2>
+          <p>Um acervo digital para ler sem barreiras.</p>
+        </div>
+        <div>
+          <span class="perk-mark">02</span>
+          <h2>Descubra algo novo</h2>
+          <p>Histórias, ideias e mundos a um clique.</p>
+        </div>
+        <div>
+          <span class="perk-mark">03</span>
+          <h2>Sempre por perto</h2>
+          <p>Volte quando quiser e continue de onde parou.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Peloponeso | A biblioteca livre</span>
+      <span>© <span id="year"></span></span>
+    </footer>
+    <script src="library-menu.js" type="module"></script>
+    <script src="home.js" type="module"></script>
+  </body>
+</html>
